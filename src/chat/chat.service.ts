@@ -1,18 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { IData } from 'src/interfaces';
+import { Message, MessageDocument } from 'src/schemas/message.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class ChatService {
-  //constructor(private usersService: UsersService) {}
+  constructor(
+    @InjectModel(Message.name) private messageModel: Model<MessageDocument>,
+  ) {}
 
   async getMessages(): Promise<any> {
-    return messages;
+    return this.messageModel.find().exec();
   }
 
   async addMessage(data: IData) {
-    messages.push(data);
-    console.log(messages);
+    //messages.push(data);
+    //console.log(messages);
+    try {
+      await this.messageModel.create(data);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
-const messages: IData[] = [];
+//const messages: IData[] = [];
