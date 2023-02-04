@@ -1,17 +1,30 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Delete } from '@nestjs/common';
+import { IUser } from 'src/interfaces';
 import { AuthentificationService } from './authentification.service';
 
 @Controller()
 export class AuthentificationController {
   constructor(private readonly authService: AuthentificationService) {}
 
-  @Post('/auth')
-  async authentificate(@Body() body) {
-    return this.authService.validateUser(body.name, body.pass);
+  @Post('/login')
+  async authentificate(@Body() user: IUser) {
+    console.log(user);
+    return this.authService.validateUser(user);
   }
 
-  @Post('/create')
-  async create(@Body() body) {
-    return this.authService.create(body.name, body.pass);
+  @Put('/login')
+  async create(@Body() user: IUser) {
+    console.log(user);
+    return this.authService.create(user);
+  }
+
+  @Delete('/login')
+  async delete() {
+    return this.authService.delete();
+  }
+
+  @Get('/login')
+  async get() {
+    return this.authService.getUsers();
   }
 }

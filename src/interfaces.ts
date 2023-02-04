@@ -3,3 +3,8 @@ export interface IData {
   msg: string;
   date: number;
 }
+
+export interface IUser {
+  login: string;
+  password: string;
+}

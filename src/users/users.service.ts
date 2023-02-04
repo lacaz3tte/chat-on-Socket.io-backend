@@ -1,38 +1,36 @@
 import { Injectable } from '@nestjs/common';
-
-export type User = any;
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { IUser } from 'src/interfaces';
+import { UserDocument, User } from 'src/schemas/user.schema';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  async findOne(login: string): Promise<any> {
+    const searchedUser = await this.userModel.find({ login: login });
+    return searchedUser;
   }
 
-  async create(username: string, password: string) {
-    const user = await this.users.find((user) => user.username === username);
-    console.log(user);
-    if (user === undefined) {
-      this.users.push({
-        userId: Date.now(),
-        username: username,
-        password: password,
-      });
+  async create(user: IUser) {
+    const searchedUser = await this.userModel.find({ login: user.login });
+    if (searchedUser[0] === undefined) {
+      await this.userModel.create(user);
+      //console.log(await this.userModel.find());
       return 'true';
     } else {
+      //console.log(await this.userModel.find());
       return 'false';
     }
+  }
+
+  async deleteAccounts() {
+    await this.userModel.deleteMany({}).exec();
+  }
+
+  async findUsers() {
+    const users = await this.userModel.find({}).exec();
+    return users;
   }
 }

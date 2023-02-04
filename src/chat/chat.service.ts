@@ -10,8 +10,8 @@ export class ChatService {
     @InjectModel(Message.name) private messageModel: Model<MessageDocument>,
   ) {}
 
-  async getMessages(): Promise<any> {
-    return this.messageModel.find().exec();
+  async getMessages(): Promise<IData[]> {
+    return await this.messageModel.find().exec();
   }
 
   async addMessage(data: IData) {
@@ -22,6 +22,10 @@ export class ChatService {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async deleteMessages() {
+    await this.messageModel.deleteMany({}).exec();
   }
 }
 
