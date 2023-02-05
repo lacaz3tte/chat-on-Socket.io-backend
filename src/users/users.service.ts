@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IUser } from 'src/interfaces';
 import { UserDocument, User } from 'src/schemas/user.schema';
+//works only from require
+const bcrypt = require('bcrypt')
 
 @Injectable()
 export class UsersService {
@@ -14,13 +16,13 @@ export class UsersService {
   }
 
   async create(user: IUser) {
+    const saltRounds = 10
     const searchedUser = await this.userModel.find({ login: user.login });
     if (searchedUser[0] === undefined) {
-      await this.userModel.create(user);
-      //console.log(await this.userModel.find());
+      const hash = bcrypt.hashSync(user.password, saltRounds);
+      await this.userModel.create({login:user.login,password:hash});
       return 'true';
     } else {
-      //console.log(await this.userModel.find());
       return 'false';
     }
   }

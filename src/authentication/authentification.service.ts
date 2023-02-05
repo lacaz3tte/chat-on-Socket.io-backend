@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { IUser } from 'src/interfaces';
+//works only from require
+const bcrypt = require('bcrypt')
 
 @Injectable()
 export class AuthentificationService {
@@ -9,11 +11,13 @@ export class AuthentificationService {
   async validateUser(user: IUser): Promise<any> {
     const searchedUser = await this.usersService.findOne(user.login);
     if (
-      searchedUser[0] !== undefined &&
-      searchedUser[0].password === user.password
+      searchedUser[0] !== undefined 
     ) {
-      const { password, ...result } = user;
-      return result;
+      const match = await bcrypt.compare(user.password, searchedUser[0].password)
+      if(match){
+        const { password, ...result } = user;
+        return result;
+      }
     }
     return { login: null };
   }
