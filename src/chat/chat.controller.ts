@@ -6,10 +6,10 @@ import { ChatService } from './chat.service';
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
-  @Get('/mess')
+  /* @Get('/mess')
   async getMessages() {
     return this.chatService.getMessages();
-  }
+  } */
 
   @Delete('/mess')
   async deleteMessages() {
