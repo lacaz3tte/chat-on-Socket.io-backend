@@ -33,4 +33,8 @@ export class AuthentificationService {
   async getUsers() {
     return await this.usersService.findUsers();
   }
+
+  async searchUsers(str) {
+    return await this.usersService.searchUsers(str.inputValue);
+  }
 }

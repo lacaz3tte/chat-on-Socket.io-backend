@@ -13,7 +13,6 @@ export class DialogService {
 
   async createDialog(users:string[]) {
     const dialog = await this.dialogModel.find({$or : [{users:[users[0],users[1]]},{users:[users[1],users[0]]}]})
-    //console.log(dialog);
     
     if(dialog.length!==0){
       return dialog[0]._id.toString()
@@ -29,6 +28,7 @@ export class DialogService {
 
   async pushMessage(data:number,message:IData) {
     await this.dialogModel.updateOne({_id:data},{$push:{messages:message}})
+    
   }
 
   async getDialogs() {
@@ -43,10 +43,7 @@ export class DialogService {
     await this.dialogModel.deleteMany({}).exec()
   }
 
-  async findLastDialogs(name:string) {
-    console.log(name);
-    //return await this.dialogModel.find({$all:{users:name}})
-    //return await this.dialogModel.find({$all:{users:name}})
+  async findLastMessages(name:string) {
      return await this.dialogModel.aggregate([
       {
         $match: { users : { $in: [ name ] }}
@@ -58,13 +55,10 @@ export class DialogService {
             users:2,
             message: { $arrayElemAt: [ "$messages", -1 ] }
           }
+      },  
+      {
+        $match: { message : { $exists: true }}
       } 
     ]) 
   }
 }
-
-/* db.student_courses.aggregate({
-  $match:{
-      $expr:{ $in: ['Java', "$courses"]}
-  }
-}); */

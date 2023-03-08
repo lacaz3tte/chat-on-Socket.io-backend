@@ -8,13 +8,11 @@ export class AuthentificationController {
 
   @Post('/login')
   async authentificate(@Body() user: IUser) {
-    console.log(user);
     return this.authService.validateUser(user);
   }
 
   @Put('/login')
   async create(@Body() user: IUser) {
-    console.log(user);
     return this.authService.create(user);
   }
 
@@ -26,5 +24,10 @@ export class AuthentificationController {
   @Get('/login')
   async get() {
     return this.authService.getUsers();
+  }
+
+  @Post('/searchLogins')
+  async searchLogins(@Body() str: any) {
+    return this.authService.searchUsers(str);
   }
 }

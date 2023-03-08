@@ -6,18 +6,10 @@ import { ChatService } from './chat.service';
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
-  /* @Get('/mess')
-  async getMessages() {
-    return this.chatService.getMessages();
-  } */
-
+  //for Postman
   @Delete('/mess')
   async deleteMessages() {
     this.chatService.deleteMessages();
   }
 
-  /* @Post('/mess')
-  async addMessage(@Body() body: IData) {
-    this.chatService.addMessage(body);
-  } */
 }

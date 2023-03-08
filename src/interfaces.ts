@@ -15,3 +15,7 @@ export interface IMessageToServer {
   date: number;
 }
 
+export interface IAccounts {
+  id:string
+  name:string
+}
