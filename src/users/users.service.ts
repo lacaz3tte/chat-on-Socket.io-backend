@@ -37,8 +37,6 @@ export class UsersService {
   }
 
   async searchUsers(str) {
-    console.log(str);
-    
     const users = await this.userModel.find( { login: { $regex: str, $options: 'i'} } ).exec();
     return users;
   }

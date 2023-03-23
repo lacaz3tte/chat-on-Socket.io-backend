@@ -13,8 +13,6 @@ export class AuthentificationService {
   ) {}
 
   async validateUser(user: IUser): Promise<any> {
-    console.log(user);
-    
     const searchedUser = await this.usersService.findOne(user.login);
     if (
       searchedUser[0] !== undefined 
