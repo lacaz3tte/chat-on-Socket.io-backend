@@ -48,6 +48,6 @@ export class AuthentificationService {
   }
 
   async searchUsers(str) {
-    return await this.usersService.searchUsers(str.inputValue);
+    return await this.usersService.searchUsers(str);
   }
 }

@@ -32,6 +32,10 @@ export class AuthentificationController {
 
   @Post('/searchLogins')
   async searchLogins(@Body() str: any) {
-    return this.authService.searchUsers(str);
+    console.log(str.value);
+    console.log(typeof(str.value));
+    
+    
+    return this.authService.searchUsers(str.value);
   }
 }
