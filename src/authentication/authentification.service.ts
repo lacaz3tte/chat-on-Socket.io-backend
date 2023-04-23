@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { IUser } from 'src/interfaces';
 import { JwtService } from '@nestjs/jwt';
@@ -27,10 +27,16 @@ export class AuthentificationService {
   }
 
   async login(user: IUser) {
-    const payload = { username: user.login}; //change username,userID
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    const searchedUser = await this.validateUser(user)
+      if(searchedUser.login===null){
+        return null
+      } else {
+        console.log('+')
+        const payload = { username: user.login}; //change username,userID
+          return {
+            access_token: this.jwtService.sign(payload),
+          };
+      }
   }
 
   async create(user: IUser) {

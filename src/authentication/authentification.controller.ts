@@ -1,17 +1,15 @@
 import { Body, Controller, Get, Post, Put, Delete, UseGuards } from '@nestjs/common';
 import { IUser } from 'src/interfaces';
 import { AuthentificationService } from './authentification.service';
-import { LocalAuthGuard } from './local.authentification-guard';
 
 @Controller()
 export class AuthentificationController {
   constructor(private readonly authService: AuthentificationService) {}
 
   @Post('/login')
-  //@UseGuards(LocalAuthGuard)
   async authentificate(@Body() user: IUser) {
-    
-    //return this.authService.validateUser(user);
+
+    console.log(this.authService.login(user))
     return this.authService.login(user);
   }
 
